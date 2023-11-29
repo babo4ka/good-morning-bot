@@ -2,12 +2,14 @@ package goodMorningBot.interval;
 
 import com.google.gson.Gson;
 import goodMorningBot.GoodMorningBotApp;
+import goodMorningBot.midnightLog.MidnightLogWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Date;
 
 @Component
 public class IntervalService {
@@ -48,6 +50,12 @@ public class IntervalService {
             responseToData();
         }
 
+        MidnightLogWriter mnlw = new MidnightLogWriter();
+        StringBuilder data = new StringBuilder()
+                .append("Set new intervals for ")
+                .append(new Date())
+                .append("\n==========================================\n");
+        mnlw.writeLog(data.toString());
     }
 
     private String requestInterval() throws IOException {

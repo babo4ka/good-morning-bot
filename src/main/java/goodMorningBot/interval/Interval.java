@@ -73,7 +73,7 @@ public final class Interval {
                 .append(hoursEnd < 10 ? ("0" + hoursEnd) : hoursEnd)
                 .append(":")
                 .append(minutesEnd<10?("0"+minutesEnd):minutesEnd)
-                .append("\n\n");
+                .append("\n==========================================\n");
 
         File logFile = new File("src/main/java/goodMorningBot/interval/intervals_log.txt");
 

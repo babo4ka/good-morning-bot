@@ -1,6 +1,7 @@
 package goodMorningBot.bot.message_info;
 
 import goodMorningBot.interval.Interval;
+import goodMorningBot.midnightLog.MidnightLogWriter;
 import org.javacord.api.entity.message.Message;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -20,8 +21,15 @@ public class MessageInfo {
     private Map<Long, Date> usersWrited = new HashMap<>();
 
     @Scheduled(cron = "0 0 0 * * *", zone = "GMT+3")
-    public void resetUsersWrited(){
+    public void resetUsersWrited() throws IOException {
         usersWrited.clear();
+
+        MidnightLogWriter mnlw = new MidnightLogWriter();
+        StringBuilder data = new StringBuilder()
+                .append("Reseted users writed for ")
+                .append(new Date())
+                .append("\n==========================================\n");
+        mnlw.writeLog(data.toString());
     }
 
     private static MessageInfo instance;
@@ -78,7 +86,7 @@ public class MessageInfo {
                 .append(date.getMinutes()<10?("0"+date.getMinutes()):date.getMinutes())
                 .append("\n")
                 .append(status)
-                .append("\n\n");
+                .append("\n==========================================\n");
 
         FileWriter logWriter = new FileWriter(logFile, true);
 

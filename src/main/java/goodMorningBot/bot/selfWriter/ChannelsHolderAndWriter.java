@@ -1,9 +1,11 @@
 package goodMorningBot.bot.selfWriter;
 
 import goodMorningBot.interval.Interval;
+import goodMorningBot.midnightLog.MidnightLogWriter;
 import org.javacord.api.entity.channel.TextChannel;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.io.IOException;
 import java.util.*;
 
 public class ChannelsHolderAndWriter {
@@ -27,23 +29,28 @@ public class ChannelsHolderAndWriter {
         channels.add(channel);
     }
 
+    private final TimerTask writeGMTask = new TimerTask() {
+        @Override
+        public void run() {
+            channels.forEach(channel -> channel.sendMessage("Доброе утро!!"));
+        }
+    };
     @Scheduled(cron = "0 1 0 * * *", zone = "GMT+3")
-    public void writeGoodMo(){
+    public void writeGoodMo() throws IOException {
         Timer timer = new Timer();
-
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                for (TextChannel ch :channels){
-                    ch.sendMessage("Доброе утро!!");
-                }
-            }
-        };
 
         Date date = new Date();
         Interval interval = Interval.getInstance();
         date.setHours(interval.getHoursStart());
         date.setMinutes(interval.getMinutesStart());
-        timer.schedule(task, date);
+        timer.schedule(writeGMTask, date);
+
+        MidnightLogWriter mnlw = new MidnightLogWriter();
+        StringBuilder data = new StringBuilder()
+                .append("Set new timer to write gm for ")
+                .append(new Date())
+                .append("\n==========================================\n");
+
+        mnlw.writeLog(date.toString());
     }
 }
