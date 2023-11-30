@@ -21,7 +21,6 @@ public final class Interval {
         if(instance == null){
             instance = new Interval();
         }
-
         return instance;
     }
 
@@ -75,16 +74,18 @@ public final class Interval {
                 .append(minutesEnd<10?("0"+minutesEnd):minutesEnd)
                 .append("\n==========================================\n");
 
-        File logFile = new File("src/main/java/goodMorningBot/interval/intervals_log.txt");
+//        File logFile = new File("src/main/java/goodMorningBot/interval/intervals_log.txt");
+//
+//        if(!logFile.exists()){
+//            logFile.createNewFile();
+//        }
+//
+//        FileWriter logWriter = new FileWriter(logFile, true);
+//
+//        logWriter.write(out.toString());
+//        logWriter.flush();
 
-        if(!logFile.exists()){
-            logFile.createNewFile();
-        }
-
-        FileWriter logWriter = new FileWriter(logFile, true);
-
-        logWriter.write(out.toString());
-        logWriter.flush();
+        System.out.println(out);
     }
 
     public Interval setHoursStart(int hoursStart) {

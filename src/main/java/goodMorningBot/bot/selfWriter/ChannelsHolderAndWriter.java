@@ -1,7 +1,6 @@
 package goodMorningBot.bot.selfWriter;
 
 import goodMorningBot.interval.Interval;
-import goodMorningBot.midnightLog.MidnightLogWriter;
 import org.javacord.api.entity.channel.TextChannel;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -45,12 +44,13 @@ public class ChannelsHolderAndWriter {
         date.setMinutes(interval.getMinutesStart());
         timer.schedule(writeGMTask, date);
 
-        MidnightLogWriter mnlw = new MidnightLogWriter();
+//        MidnightLogWriter mnlw = new MidnightLogWriter();
         StringBuilder data = new StringBuilder()
                 .append("Set new timer to write gm for ")
                 .append(new Date())
                 .append("\n==========================================\n");
 
-        mnlw.writeLog(date.toString());
+        System.out.println(data);
+//        mnlw.writeLog(data.toString());
     }
 }

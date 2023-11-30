@@ -1,12 +1,9 @@
 package goodMorningBot.bot.message_info;
 
 import goodMorningBot.interval.Interval;
-import goodMorningBot.midnightLog.MidnightLogWriter;
 import org.javacord.api.entity.message.Message;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,12 +21,13 @@ public class MessageInfo {
     public void resetUsersWrited() throws IOException {
         usersWrited.clear();
 
-        MidnightLogWriter mnlw = new MidnightLogWriter();
+//        MidnightLogWriter mnlw = new MidnightLogWriter();
         StringBuilder data = new StringBuilder()
                 .append("Reseted users writed for ")
                 .append(new Date())
                 .append("\n==========================================\n");
-        mnlw.writeLog(data.toString());
+        System.out.println(data);
+//        mnlw.writeLog(data.toString());
     }
 
     private static MessageInfo instance;
@@ -66,11 +64,11 @@ public class MessageInfo {
     }
 
     private void writeLog(String userName, String channelID, Date date, String status) throws IOException {
-        File logFile = new File("src/main/java/goodMorningBot/bot/message_info/msg_log.txt");
-
-        if(!logFile.exists()){
-            logFile.createNewFile();
-        }
+//        File logFile = new File("src/main/java/goodMorningBot/bot/message_info/msg_log.txt");
+//
+//        if(!logFile.exists()){
+//            logFile.createNewFile();
+//        }
 
         StringBuilder out = new StringBuilder()
                 .append(userName)
@@ -88,9 +86,10 @@ public class MessageInfo {
                 .append(status)
                 .append("\n==========================================\n");
 
-        FileWriter logWriter = new FileWriter(logFile, true);
-
-        logWriter.write(out.toString());
-        logWriter.flush();
+        System.out.println(out);
+//        FileWriter logWriter = new FileWriter(logFile, true);
+//
+//        logWriter.write(out.toString());
+//        logWriter.flush();
     }
 }

@@ -1,8 +1,6 @@
 package goodMorningBot.interval;
 
 import com.google.gson.Gson;
-import goodMorningBot.GoodMorningBotApp;
-import goodMorningBot.midnightLog.MidnightLogWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,6 +16,7 @@ public class IntervalService {
     private static SocketConfig config;
     @Autowired
     private void init(SocketConfig config) throws IOException {
+        System.out.println("init");
         IntervalService.config = config;
         responseToData();
     }
@@ -25,37 +24,26 @@ public class IntervalService {
     private int tries = 0;
     @Scheduled(cron = "0 0 0 * * *", zone = "GMT+3")
     public void responseToData() throws IOException {
-        try{
-            String response = requestInterval();
-            Gson g = new Gson();
-            ResponseData data = g.fromJson(response, ResponseData.class);
+        String response = requestInterval();
+        Gson g = new Gson();
+        ResponseData data = g.fromJson(response, ResponseData.class);
 
-            interval = Interval.getInstance();
-            interval
-                    .setHoursStart((int)Math.floor(data.getStart()))
-                    .setMinutesStart((int)((data.getStart()-Math.floor(data.getStart()))*60))
-                    .setHoursEnd((int)Math.floor(data.getEnd()))
-                    .setMinutesEnd((int)((data.getEnd()-Math.floor(data.getEnd()))*60));
+        interval = Interval.getInstance();
 
-            interval.intervalsToday();
-        }catch (Exception e){
-            if(tries == 5){
-                interval
-                        .setHoursStart(-1)
-                        .setMinutesStart(-1)
-                        .setHoursEnd(-1)
-                        .setMinutesEnd(-1);
-            }
-            tries++;
-            responseToData();
-        }
+        interval
+                .setHoursStart((int)Math.floor(data.getStart()))
+                .setMinutesStart((int)((data.getStart()-Math.floor(data.getStart()))*60))
+                .setHoursEnd((int)Math.floor(data.getEnd()))
+                .setMinutesEnd((int)((data.getEnd()-Math.floor(data.getEnd()))*60));
 
-        MidnightLogWriter mnlw = new MidnightLogWriter();
-        StringBuilder data = new StringBuilder()
+        interval.intervalsToday();
+
+        StringBuilder out = new StringBuilder()
                 .append("Set new intervals for ")
                 .append(new Date())
                 .append("\n==========================================\n");
-        mnlw.writeLog(data.toString());
+
+        System.out.println(out);
     }
 
     private String requestInterval() throws IOException {
@@ -69,7 +57,7 @@ public class IntervalService {
 
         String response = in.readLine();
         in.close();
-
+        client.close();
         return response;
     }
 }
